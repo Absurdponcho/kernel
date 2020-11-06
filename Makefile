@@ -11,6 +11,7 @@ LDFLAGS = -T $(LDS) -shared -Bsymbolic -nostdlib
 
 SRCDIR := src
 OBJDIR := tmp
+BUILDDIR = build
 BOOTEFI := $(GNUEFI)/x86_64/bootloader/main.efi
 
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
