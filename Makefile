@@ -4,14 +4,14 @@ OSNAME = CustomOS
 GNUEFI = ../gnu-efi
 OVMFDIR = ../OVMFbin
 LDS = 
-CC = gcc
+CC = x86_64-w64-mingw32-gcc
 
 CFLAGS = -ffreestanding -fshort-wchar
 LDFLAGS = -T $(LDS) -shared -Bsymbolic -nostdlib
 
 SRCDIR := src
-OBJDIR := tmp
-BUILDDIR = build
+OBJDIR := lib
+BUILDDIR = bin
 BOOTEFI := $(GNUEFI)/x86_64/bootloader/main.efi
 
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
@@ -19,6 +19,11 @@ rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(su
 SRC = $(call rwildcard,$(SRCDIR),*.c)          
 OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRC))
 DIRS = $(wildcard $(SRCDIR)/*)
+
+setup:
+	@mkdir $(BUILDDIR)
+	@mkdir $(SRCDIR)
+	@mkdir $(OBJDIR)
 
 buildimg:
 	dd if=/dev/zero of=$(BUILDDIR)/$(OSNAME).img bs=512 count=93750
